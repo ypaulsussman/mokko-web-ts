@@ -4,6 +4,7 @@ import {
   Alert, Button, Form, Fieldset, GridContainer,
   Header, Label, PrimaryNav, TextInput
 } from "@trussworks/react-uswds";
+import { API_URL } from "../constants";
 import { getData } from "../utils";
 
 type LoginProps = {
@@ -18,21 +19,20 @@ const Login: FC<LoginProps> = ({ setIsLoggedIn }) => {
     e.preventDefault();
     const formElement = document.querySelector("form");
     const formData = new FormData(formElement || undefined).entries();
-    const body = Array.from(formData).reduce((acc, [k, v]) => {
-      // @ts-ignore
-      acc[k] = v;
-      return acc;
-    }, {});
+    const body = Array
+      .from(formData)
+      .reduce((acc: {[k: string]: string | object}, [k, v]) => {
+        acc[k] = v;
+        return acc;
+      }, {});
 
-    const url = "http://localhost:5000/api/login";
-    getData(
-      url,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      }
-    ).then(
+    const reqOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    };
+
+    getData(`${API_URL}/login`, reqOptions).then(
       ({ auth_token: authToken }) => {
         localStorage.setItem("authToken", authToken);
         setIsLoggedIn(true);
