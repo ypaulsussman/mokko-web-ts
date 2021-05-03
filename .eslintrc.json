@@ -15,6 +15,7 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint"],
   "rules": {
+    "arrow-parens": ["warn", "as-needed"],
     "comma-dangle": ["warn", "never"],
     "import/extensions": [
       "error",
