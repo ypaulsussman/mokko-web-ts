@@ -1,19 +1,13 @@
-import React, {
-  FormEvent, ReactNode, useState, FC
-} from "react";
+import React, { FormEvent, useState, FC } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {
-  Alert, Button, Form, Fieldset, GridContainer, Header, Label, PrimaryNav, TextInput
+  Alert, Button, Form, Fieldset, GridContainer,
+  Header, Label, PrimaryNav, TextInput
 } from "@trussworks/react-uswds";
 import { getData } from "../utils";
 
-const navLinks: ReactNode[] = [
-  <Link to="/">Home</Link>
-];
-
 type LoginProps = {
-  // eslint-disable-next-line no-unused-vars
-  setIsLoggedIn: (arg0: boolean) => void
+  setIsLoggedIn: (isLoggedIn: boolean) => void
 }
 
 const Login: FC<LoginProps> = ({ setIsLoggedIn }) => {
@@ -53,7 +47,7 @@ const Login: FC<LoginProps> = ({ setIsLoggedIn }) => {
     <>
       <Header basic>
         <div className="usa-nav-container">
-          <PrimaryNav items={navLinks} />
+          <PrimaryNav items={[<Link to="/">Home</Link>]} />
         </div>
       </Header>
       <GridContainer containerSize="desktop">

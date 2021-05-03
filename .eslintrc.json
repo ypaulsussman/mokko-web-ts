@@ -25,15 +25,17 @@
         "tsx": "never"
       }
     ],
-    "no-shadow": "off",
-    "no-use-before-define": "off",
     "quotes": ["warn", "double", { "allowTemplateLiterals": true }],
     "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],
     "react/prop-types": "off",
     "react-hooks/rules-of-hooks": "warn",
     "react-hooks/exhaustive-deps": "warn",
+    "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
-    "@typescript-eslint/no-use-before-define": ["error"]
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"]
   },
   "settings": {
     "import/resolver": {

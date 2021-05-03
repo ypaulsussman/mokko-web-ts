@@ -5,8 +5,7 @@ import {
 } from "@trussworks/react-uswds";
 
 type LanderProps = {
-  // eslint-disable-next-line no-unused-vars
-  setIsLoggedIn: (arg0: boolean) => void
+  setIsLoggedIn: (isLoggedIn: boolean) => void
   isLoggedIn: boolean
 }
 
