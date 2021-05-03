@@ -15,10 +15,12 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/login">
-            <Login setIsLoggedIn={setIsLoggedIn} />
+            { isLoggedIn
+              ? <Lander isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+              : <Login setIsLoggedIn={setIsLoggedIn} />}
           </Route>
           <Route path="/">
-            <Lander isLoggedIn={isLoggedIn} />
+            <Lander isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
           </Route>
         </Switch>
       </Router>

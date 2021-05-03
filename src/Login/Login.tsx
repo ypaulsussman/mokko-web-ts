@@ -40,7 +40,7 @@ const Login: FC<LoginProps> = ({ setIsLoggedIn }) => {
       }
     ).then(
       ({ auth_token: authToken }) => {
-        sessionStorage.setItem("authToken", authToken);
+        localStorage.setItem("authToken", authToken);
         setIsLoggedIn(true);
         history.push("/");
       }
