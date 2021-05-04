@@ -1,4 +1,6 @@
-import React, { FC, ReactNode, useMemo } from "react";
+import React, {
+  FC, ReactNode, useEffect, useMemo
+} from "react";
 import { Link } from "react-router-dom";
 import {
   Button, GridContainer, Header, PrimaryNav
@@ -6,7 +8,25 @@ import {
 import { calcUpcomingNotes, useFetch } from "../utils";
 import { API_URL } from "../constants";
 
-const Overview = () => {
+type UpcomingNotes = {
+  today: string[]
+  tomorrow: string[]
+  restOfWeek: string[]
+}
+
+type LanderProps = {
+  isLoggedIn: boolean
+  setIsLoggedIn: (isLoggedIn: boolean) => void
+  upcomingNotes: UpcomingNotes
+  setUpcomingNotes: (data: UpcomingNotes) => void
+}
+
+type OverviewProps = {
+  upcomingNotes: UpcomingNotes
+  setUpcomingNotes: (data: UpcomingNotes) => void
+}
+
+const Overview: FC<OverviewProps> = ({ setUpcomingNotes, upcomingNotes }) => {
   const url = `${API_URL}/notes/overview`;
   const reqOptions = useMemo(() => ({
     method: "GET",
@@ -15,30 +35,29 @@ const Overview = () => {
 
   // @TODO: add loading spinner
   const { data } = useFetch(url, reqOptions);
-  const { today, tomorrow, restOfWeek } = calcUpcomingNotes(data);
+  useEffect(() => {
+    setUpcomingNotes(calcUpcomingNotes(data));
+  }, [data, setUpcomingNotes]);
 
   return (
     <>
-      <p>{`Today: ${today} notes`}</p>
-      <p>{`Tomorrow: ${tomorrow} notes`}</p>
-      <p>{`Rest of Week: ${restOfWeek} notes`}</p>
+      <p>{`Today: ${upcomingNotes.today.length} notes`}</p>
+      <p>{`Tomorrow: ${upcomingNotes.tomorrow.length} notes`}</p>
+      <p>{`Rest of Week: ${upcomingNotes.restOfWeek.length} notes`}</p>
     </>
   );
 };
 
-const Welcome = () => (
+const Welcome: FC = () => (
   <>
     <p>(Or &quot;Forster&quot;; not sure which yet)</p>
     <p>(actual description of app goals goes here... later)</p>
   </>
 );
 
-type LanderProps = {
-  setIsLoggedIn: (isLoggedIn: boolean) => void
-  isLoggedIn: boolean
-}
-
-const Lander: FC<LanderProps> = ({ isLoggedIn, setIsLoggedIn }) => {
+const Lander: FC<LanderProps> = ({
+  isLoggedIn, setIsLoggedIn, upcomingNotes, setUpcomingNotes
+}) => {
   const logOut = () => {
     localStorage.removeItem("authToken");
     setIsLoggedIn(false);
@@ -57,7 +76,9 @@ const Lander: FC<LanderProps> = ({ isLoggedIn, setIsLoggedIn }) => {
       </Header>
       <GridContainer containerSize="desktop">
         <h1>Welcome to Mokko!</h1>
-        {isLoggedIn ? <Overview /> : <Welcome />}
+        {isLoggedIn
+          ? <Overview upcomingNotes={upcomingNotes} setUpcomingNotes={setUpcomingNotes} />
+          : <Welcome />}
       </GridContainer>
     </>
   );

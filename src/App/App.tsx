@@ -7,20 +7,41 @@ import Lander from "../Lander/Lander";
 
 import "./App.css";
 
+type UpcomingNotes = {
+  today: string[]
+  tomorrow: string[]
+  restOfWeek: string[]
+}
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const init: UpcomingNotes = { today: [], tomorrow: [], restOfWeek: [] };
+  const [upcomingNotes, setUpcomingNotes] = useState(init);
 
   return (
     <div className="App">
       <Router>
         <Switch>
           <Route path="/login">
+            {/* @TODO: figure out how to redirect w/o hooks warnings */}
             { isLoggedIn
-              ? <Lander isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+              ? (
+                <Lander
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  upcomingNotes={upcomingNotes}
+                  setUpcomingNotes={setUpcomingNotes}
+                />
+              )
               : <Login setIsLoggedIn={setIsLoggedIn} />}
           </Route>
           <Route path="/">
-            <Lander isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+            <Lander
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
+              upcomingNotes={upcomingNotes}
+              setUpcomingNotes={setUpcomingNotes}
+            />
           </Route>
         </Switch>
       </Router>

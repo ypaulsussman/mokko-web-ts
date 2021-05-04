@@ -39,8 +39,14 @@ export const useFetch = (url: string, init: object) => {
   return { data, status, error };
 };
 
+type UpcomingNotes = {
+  today: string[]
+  tomorrow: string[]
+  restOfWeek: string[]
+}
+
 // eslint-disable-next-line camelcase
-export const calcUpcomingNotes = (data: { next_occurrence: string, id?: null }[] = []) => {
+export const calcUpcomingNotes = (data: { next_occurrence: string, id: string }[] = []) => {
   const today = new Date();
   const paddedMonth = (today.getMonth() + 1) > 9 ? (today.getMonth() + 1) : `0${today.getMonth() + 1}`;
   const paddedToday = today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`;
@@ -49,14 +55,16 @@ export const calcUpcomingNotes = (data: { next_occurrence: string, id?: null }[]
   const todayish = `${today.getFullYear()}-${paddedMonth}-${paddedToday}`;
   const tomorrowish = `${today.getFullYear()}-${paddedMonth}-${paddedTomorrow}`;
 
-  return data.reduce((acc, { next_occurrence: nextOccurrence }) => {
+  const initialValue: UpcomingNotes = { today: [], tomorrow: [], restOfWeek: [] };
+
+  return data.reduce((acc, { id, next_occurrence: nextOccurrence }) => {
     if (nextOccurrence === todayish) {
-      acc.today += 1;
+      acc.today.push(id);
     } else if (nextOccurrence === tomorrowish) {
-      acc.tomorrow += 1;
+      acc.tomorrow.push(id);
     } else {
-      acc.restOfWeek += 1;
+      acc.restOfWeek.push(id);
     }
     return acc;
-  }, { today: 0, tomorrow: 0, restOfWeek: 0 });
+  }, initialValue);
 };
