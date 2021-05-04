@@ -38,3 +38,25 @@ export const useFetch = (url: string, init: object) => {
 
   return { data, status, error };
 };
+
+// eslint-disable-next-line camelcase
+export const calcUpcomingNotes = (data: { next_occurrence: string, id?: null }[] = []) => {
+  const today = new Date();
+  const paddedMonth = (today.getMonth() + 1) > 9 ? (today.getMonth() + 1) : `0${today.getMonth() + 1}`;
+  const paddedToday = today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`;
+  const paddedTomorrow = (today.getDate() + 1) > 9 ? today.getDate() : `0${today.getDate() + 1}`;
+
+  const todayish = `${today.getFullYear()}-${paddedMonth}-${paddedToday}`;
+  const tomorrowish = `${today.getFullYear()}-${paddedMonth}-${paddedTomorrow}`;
+
+  return data.reduce((acc, { next_occurrence: nextOccurrence }) => {
+    if (nextOccurrence === todayish) {
+      acc.today += 1;
+    } else if (nextOccurrence === tomorrowish) {
+      acc.tomorrow += 1;
+    } else {
+      acc.restOfWeek += 1;
+    }
+    return acc;
+  }, { today: 0, tomorrow: 0, restOfWeek: 0 });
+};
