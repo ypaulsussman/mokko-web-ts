@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import Login from "../Login/Login";
 import Lander from "../Lander/Lander";
+import Review from "../Review/Review";
 
 import "./App.css";
 
@@ -14,7 +15,7 @@ type UpcomingNotes = {
 }
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => Boolean(localStorage.getItem("mokkoAuthToken")));
   const init: UpcomingNotes = { today: [], tomorrow: [], restOfWeek: [] };
   const [upcomingNotes, setUpcomingNotes] = useState(init);
 
@@ -34,6 +35,12 @@ const App = () => {
                 />
               )
               : <Login setIsLoggedIn={setIsLoggedIn} />}
+          </Route>
+          <Route path="/review">
+            <Review
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
+            />
           </Route>
           <Route path="/">
             <Lander

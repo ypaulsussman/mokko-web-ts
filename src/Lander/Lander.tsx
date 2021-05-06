@@ -30,7 +30,7 @@ const Overview: FC<OverviewProps> = ({ setUpcomingNotes, upcomingNotes }) => {
   const url = `${API_URL}/notes/overview`;
   const reqOptions = useMemo(() => ({
     method: "GET",
-    headers: { Authorization: localStorage.getItem("authToken") }
+    headers: { Authorization: localStorage.getItem("mokkoAuthToken") }
   }), []);
 
   // @TODO: add loading spinner
@@ -41,15 +41,18 @@ const Overview: FC<OverviewProps> = ({ setUpcomingNotes, upcomingNotes }) => {
 
   return (
     <>
+      <h1>Upcoming Notes</h1>
       <p>{`Today: ${upcomingNotes.today.length} notes`}</p>
       <p>{`Tomorrow: ${upcomingNotes.tomorrow.length} notes`}</p>
       <p>{`Rest of Week: ${upcomingNotes.restOfWeek.length} notes`}</p>
+      <Link to="/review">Review Today&apos;s Notes</Link>
     </>
   );
 };
 
 const Welcome: FC = () => (
   <>
+    <h1>Welcome to Mokko!</h1>
     <p>(Or &quot;Forster&quot;; not sure which yet)</p>
     <p>(actual description of app goals goes here... later)</p>
   </>
@@ -59,7 +62,7 @@ const Lander: FC<LanderProps> = ({
   isLoggedIn, setIsLoggedIn, upcomingNotes, setUpcomingNotes
 }) => {
   const logOut = () => {
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("mokkoAuthToken");
     setIsLoggedIn(false);
   };
 
@@ -75,7 +78,6 @@ const Lander: FC<LanderProps> = ({
         </div>
       </Header>
       <GridContainer containerSize="desktop">
-        <h1>Welcome to Mokko!</h1>
         {isLoggedIn
           ? <Overview upcomingNotes={upcomingNotes} setUpcomingNotes={setUpcomingNotes} />
           : <Welcome />}

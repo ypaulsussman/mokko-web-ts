@@ -34,7 +34,7 @@ const Login: FC<LoginProps> = ({ setIsLoggedIn }) => {
 
     getData(`${API_URL}/login`, reqOptions).then(
       ({ auth_token: authToken }) => {
-        localStorage.setItem("authToken", authToken);
+        localStorage.setItem("mokkoAuthToken", authToken);
         setIsLoggedIn(true);
         history.push("/");
       }
